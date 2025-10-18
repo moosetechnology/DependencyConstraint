@@ -1,5 +1,5 @@
 "
-A DCLModule created with an explicit list of member entities
+A DCLModule created with an explicit list of member entities  (setter: `memberEntities:`)
 "
 Class {
 	#name : 'DCLModuleExplicit',
