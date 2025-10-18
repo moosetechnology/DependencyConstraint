@@ -2,7 +2,7 @@
 DCL is a language to define dependency constraints between software entities.
 It is intended to define and check architectural constraints.
 
-It is inspired by: Valente, Terra, "A dependency constraint language to manage object-oriented software architectures", *Software Practice and Experience,* 39(12), 1073-1094, August 2009
+It is inspired by: Valente, Terra, "[A dependency constraint language to manage object-oriented software architectures](https://homepages.dcc.ufmg.br/~mtov/pub/2009_spe.pdf)", *Software Practice and Experience,* 39(12), 1073-1094, August 2009
 
 ## Using
 
