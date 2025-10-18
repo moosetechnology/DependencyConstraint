@@ -11,63 +11,65 @@ dependencies between modules can be:
 - #depend: (all four preceeding together)
 "
 Class {
-	#name : #DCLAbstractConstraint,
-	#superclass : #Object,
+	#name : 'DCLAbstractConstraint',
+	#superclass : 'Object',
 	#instVars : [
 		'moduleB',
 		'association',
 		'moduleA'
 	],
-	#category : #'DependencyConstraint-Constraints'
+	#category : 'DependencyConstraint-Constraints',
+	#package : 'DependencyConstraint',
+	#tag : 'Constraints'
 }
 
-{ #category : #DSL }
+{ #category : 'DSL' }
 DCLAbstractConstraint >> access: aDCLModule [
 	association := FamixTAccess.
 	moduleB := aDCLModule
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 DCLAbstractConstraint >> association [
 
 	^ association
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 DCLAbstractConstraint >> association: anObject [
 
 	association := anObject
 ]
 
-{ #category : #checking }
+{ #category : 'checking' }
 DCLAbstractConstraint >> check [
 	self subclassResponsibility 
 ]
 
-{ #category : #DSL }
+{ #category : 'DSL' }
 DCLAbstractConstraint >> depend: aDCLModule [
 	association := FamixTAssociation.
 	moduleB := aDCLModule
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 DCLAbstractConstraint >> incomingDependenciesFor: entity in: module [
 	^module incomingDependencies: association for: entity
 ]
 
-{ #category : #DSL }
+{ #category : 'DSL' }
 DCLAbstractConstraint >> inherit: aDCLModule [
 	association := FamixTInheritance.
 	moduleB := aDCLModule
 ]
 
-{ #category : #DSL }
+{ #category : 'DSL' }
 DCLAbstractConstraint >> invoke: aDCLModule [
 	association := FamixTInvocation.
 	moduleB := aDCLModule
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 DCLAbstractConstraint >> isFullySpecified [ 
 | a |
 a isNil.
@@ -79,42 +81,42 @@ a isNil.
 
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 DCLAbstractConstraint >> moduleA [
 
 	^ moduleA
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 DCLAbstractConstraint >> moduleA: anObject [
 
 	moduleA := anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 DCLAbstractConstraint >> moduleB [
 
 	^ moduleB
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 DCLAbstractConstraint >> moduleB: anObject [
 
 	moduleB := anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 DCLAbstractConstraint >> outgoingDependenciesFor: entity in: module [
 	^module outgoingDependencies: association for: entity
 ]
 
-{ #category : #DSL }
+{ #category : 'DSL' }
 DCLAbstractConstraint >> reference: aDCLModule [
 	association := FamixTReference.
 	moduleB := aDCLModule
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 DCLAbstractConstraint >> violations [
 	^self check
 ]

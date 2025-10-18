@@ -1,10 +1,12 @@
 Class {
-	#name : #DCLCanOnlyConstraintTest,
-	#superclass : #DCLAbstractConstraintTest,
-	#category : #'DependencyConstraint-Tests'
+	#name : 'DCLCanOnlyConstraintTest',
+	#superclass : 'DCLAbstractConstraintTest',
+	#category : 'DependencyConstraint-Tests',
+	#package : 'DependencyConstraint',
+	#tag : 'Tests'
 }
 
-{ #category : #tests }
+{ #category : 'tests' }
 DCLCanOnlyConstraintTest >> testCheckNotOKInvoke [
 	| violations |
 	violations := (p3 canOnly invoke: p2p5) check.
@@ -14,14 +16,14 @@ DCLCanOnlyConstraintTest >> testCheckNotOKInvoke [
 	 m1p3c6Mtd2 -> new"
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 DCLCanOnlyConstraintTest >> testCheckOKReference [
 	| violations |
 	violations := (p3 canOnly reference: p2p5) check.
 	self assert: violations isEmpty
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 DCLCanOnlyConstraintTest >> testIsFullySpecified [
 	| constraint |
 	constraint := p2p5 canOnly access: p3.
@@ -30,7 +32,7 @@ DCLCanOnlyConstraintTest >> testIsFullySpecified [
 	self assert: constraint isFullySpecified 
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 DCLCanOnlyConstraintTest >> testIsNotFullySpecified [
 	| constraint |
 	constraint := p2p5 canOnly.

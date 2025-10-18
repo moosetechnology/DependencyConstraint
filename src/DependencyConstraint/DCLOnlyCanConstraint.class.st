@@ -3,12 +3,14 @@ I represent an architectural rule between two architectural modules A and B (DCL
 I specify that moduleA **only, can** depend on moduleB (and no other module apart for moduleB itself)
 "
 Class {
-	#name : #DCLOnlyCanConstraint,
-	#superclass : #DCLAbstractConstraint,
-	#category : #'DependencyConstraint-Constraints'
+	#name : 'DCLOnlyCanConstraint',
+	#superclass : 'DCLAbstractConstraint',
+	#category : 'DependencyConstraint-Constraints',
+	#package : 'DependencyConstraint',
+	#tag : 'Constraints'
 }
 
-{ #category : #checking }
+{ #category : 'checking' }
 DCLOnlyCanConstraint >> check [
 	"checks whether only ModuleA depends on ModuleB (ignoring self dependencies in moduleB).
 	If yes, returns empty array (no violations)	
