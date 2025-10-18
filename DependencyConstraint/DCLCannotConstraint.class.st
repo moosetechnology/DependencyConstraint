@@ -3,12 +3,14 @@ I represent an architectural rule between two architectural modules A and B (DCL
 I specify that moduleA **cannot** depend on moduleB
 "
 Class {
-	#name : #DCLCannotConstraint,
-	#superclass : #DCLAbstractConstraint,
-	#category : #'DependencyConstraint-Constraints'
+	#name : 'DCLCannotConstraint',
+	#superclass : 'DCLAbstractConstraint',
+	#category : 'DependencyConstraint-Constraints',
+	#package : 'DependencyConstraint',
+	#tag : 'Constraints'
 }
 
-{ #category : #checking }
+{ #category : 'checking' }
 DCLCannotConstraint >> check [
 
 	"checks that there is no dependency from ModuleA to ModuleB.

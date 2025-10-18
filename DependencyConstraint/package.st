@@ -1,1 +1,1 @@
-Package { #name : #DependencyConstraint }
+Package { #name : 'DependencyConstraint' }

@@ -1,6 +1,6 @@
-Extension { #name : #FamixTInvocation }
+Extension { #name : 'FamixTInvocation' }
 
-{ #category : #'*DependencyConstraint' }
+{ #category : '*DependencyConstraint' }
 FamixTInvocation >> querySelector [
 
 	^ #queryAllOutgoingInvocations

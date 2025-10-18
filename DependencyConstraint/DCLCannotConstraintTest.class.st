@@ -1,10 +1,12 @@
 Class {
-	#name : #DCLCannotConstraintTest,
-	#superclass : #DCLAbstractConstraintTest,
-	#category : #'DependencyConstraint-Tests'
+	#name : 'DCLCannotConstraintTest',
+	#superclass : 'DCLAbstractConstraintTest',
+	#category : 'DependencyConstraint-Tests',
+	#package : 'DependencyConstraint',
+	#tag : 'Tests'
 }
 
-{ #category : #tests }
+{ #category : 'tests' }
 DCLCannotConstraintTest >> testCheckNotOKDepend [
 	| violations |
 	violations := (p3 cannot depend: p2p5) check.
@@ -15,7 +17,7 @@ DCLCannotConstraintTest >> testCheckNotOKDepend [
 	 m1p3c6Mtd1 -> m1p2c3Mtd3"
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 DCLCannotConstraintTest >> testCheckNotOKInvoke [
 	| violations |
 	violations := (p3 cannot invoke: p2p5) check.
@@ -24,28 +26,28 @@ DCLCannotConstraintTest >> testCheckNotOKInvoke [
 	 m1p3c6Mtd1 -> m1p2c3Mtd3"
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 DCLCannotConstraintTest >> testCheckOKDepend [
 	| violations |
 	violations := (p2p5 cannot depend: p3) check.
 	self assert: violations isEmpty
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 DCLCannotConstraintTest >> testCheckOKInvoke [
 	| violations |
 	violations := (p2p5 cannot invoke: p3) check.
 	self assert: violations isEmpty
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 DCLCannotConstraintTest >> testCheckOKReference [
 	| violations |
 	violations := (p2p5 cannot reference: p3) check.
 	self assert: violations isEmpty
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 DCLCannotConstraintTest >> testIsFullySpecified [
 	| constraint |
 	constraint := p2p5 cannot access: p3.
@@ -54,7 +56,7 @@ DCLCannotConstraintTest >> testIsFullySpecified [
 	self assert: constraint isFullySpecified 
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 DCLCannotConstraintTest >> testIsNotFullySpecified [
 	| constraint |
 	constraint := p2p5 cannot.

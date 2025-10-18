@@ -1,16 +1,18 @@
 Class {
-	#name : #DCLAbstractConstraintTest,
-	#superclass : #DCLAbstractTest,
+	#name : 'DCLAbstractConstraintTest',
+	#superclass : 'DCLAbstractTest',
 	#instVars : [
 		'p2p5',
 		'p3',
 		'p13',
 		'p14'
 	],
-	#category : #'DependencyConstraint-Tests'
+	#category : 'DependencyConstraint-Tests',
+	#package : 'DependencyConstraint',
+	#tag : 'Tests'
 }
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 DCLAbstractConstraintTest >> setUp [
 	super setUp.
 

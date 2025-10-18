@@ -1,10 +1,12 @@
 Class {
-	#name : #DCLModuleOnNameTest,
-	#superclass : #DCLAbstractTest,
-	#category : #'DependencyConstraint-Tests'
+	#name : 'DCLModuleOnNameTest',
+	#superclass : 'DCLAbstractTest',
+	#category : 'DependencyConstraint-Tests',
+	#package : 'DependencyConstraint',
+	#tag : 'Tests'
 }
 
-{ #category : #tests }
+{ #category : 'tests' }
 DCLModuleOnNameTest >> testAsTag [
 	| module tag |
 	module := DCLModuleOnName new
@@ -23,7 +25,7 @@ DCLModuleOnNameTest >> testAsTag [
 
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 DCLModuleOnNameTest >> testDescriptionMatches [
 	| module |
 	module := DCLModuleOnName new
@@ -35,7 +37,7 @@ DCLModuleOnNameTest >> testDescriptionMatches [
 	self deny:   (module descriptionMatches: (FamixStNamedEntity new name: 'gfedcba' ; yourself)).
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 DCLModuleOnNameTest >> testIsFullySpecified [
 	self deny:   (DCLModuleOnName new name: 'mod'; yourself) isFullySpecified.
 	self deny:   (DCLModuleOnName new name: 'mod'; description: '.*abc.*'; yourself) isFullySpecified.
@@ -44,7 +46,7 @@ DCLModuleOnNameTest >> testIsFullySpecified [
 
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 DCLModuleOnNameTest >> testMemberEntities [
 	| module |
 	module := DCLModuleOnName new
@@ -57,7 +59,7 @@ DCLModuleOnNameTest >> testMemberEntities [
 
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 DCLModuleOnNameTest >> testNoMemberEntities [
 	| module |
 	module := DCLModuleOnName new

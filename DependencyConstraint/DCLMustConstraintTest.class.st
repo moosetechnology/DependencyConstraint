@@ -1,10 +1,12 @@
 Class {
-	#name : #DCLMustConstraintTest,
-	#superclass : #DCLAbstractConstraintTest,
-	#category : #'DependencyConstraint-Tests'
+	#name : 'DCLMustConstraintTest',
+	#superclass : 'DCLAbstractConstraintTest',
+	#category : 'DependencyConstraint-Tests',
+	#package : 'DependencyConstraint',
+	#tag : 'Tests'
 }
 
-{ #category : #tests }
+{ #category : 'tests' }
 DCLMustConstraintTest >> testCheckNotOKDepend [
 	| violations |
 	violations := (p2p5 must depend: p3) check.
@@ -17,7 +19,7 @@ DCLMustConstraintTest >> testCheckNotOKDepend [
 		--> 16"
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 DCLMustConstraintTest >> testCheckNotOKInvoke [
 	| violations |
 	violations := (p2p5 must invoke: p3) check.
@@ -30,28 +32,28 @@ DCLMustConstraintTest >> testCheckNotOKInvoke [
 		--> 8"
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 DCLMustConstraintTest >> testCheckOKDepend [
 	| violations |
 	violations := (p3 must depend: p2p5) check.
 	self assert: violations isEmpty
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 DCLMustConstraintTest >> testCheckOKInvoke [
 	| violations |
 	violations := (p3 must invoke: p2p5) check.
 	self assert: violations isEmpty
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 DCLMustConstraintTest >> testCheckOKReference [
 	| violations |
 	violations := (p3 must reference: p2p5) check.
 	self assert: violations isEmpty
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 DCLMustConstraintTest >> testIsFullySpecified [
 	| constraint |
 	constraint := p2p5 must access: p3.
@@ -60,7 +62,7 @@ DCLMustConstraintTest >> testIsFullySpecified [
 	self assert: constraint isFullySpecified 
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 DCLMustConstraintTest >> testIsNotFullySpecified [
 	| constraint |
 	constraint := p2p5 must.

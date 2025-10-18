@@ -1,13 +1,15 @@
 Class {
-	#name : #DCLAbstractTest,
-	#superclass : #TestCase,
+	#name : 'DCLAbstractTest',
+	#superclass : 'TestCase',
 	#instVars : [
 		'mooseModel'
 	],
-	#category : #'DependencyConstraint-Tests'
+	#category : 'DependencyConstraint-Tests',
+	#package : 'DependencyConstraint',
+	#tag : 'Tests'
 }
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 DCLAbstractTest >> setUp [
 	mooseModel := FamixStModel new.
 	MoosePharoImporterTask new

@@ -1,6 +1,6 @@
-Extension { #name : #FamixTAccess }
+Extension { #name : 'FamixTAccess' }
 
-{ #category : #'*DependencyConstraint' }
+{ #category : '*DependencyConstraint' }
 FamixTAccess >> querySelector [
 
 	^ #queryOutgoingAccesses

@@ -8,8 +8,8 @@ I have:
 I can also be converted to a Famix tag in my #model (#asTag)
 "
 Class {
-	#name : #DCLAbstractModule,
-	#superclass : #Object,
+	#name : 'DCLAbstractModule',
+	#superclass : 'Object',
 	#instVars : [
 		'name',
 		'regexp',
@@ -17,117 +17,119 @@ Class {
 		'cache',
 		'memberEntities'
 	],
-	#category : #'DependencyConstraint-Constraints'
+	#category : 'DependencyConstraint-Constraints',
+	#package : 'DependencyConstraint',
+	#tag : 'Constraints'
 }
 
-{ #category : #converting }
+{ #category : 'converting' }
 DCLAbstractModule >> asTag [
+
 	| tag |
-	self isFullySpecified ifFalse: [ ^nil ].
+	self isFullySpecified ifFalse: [ ^ nil ].
 	tag := self mooseModel tagNamed: name.
 	self memberEntities do: [ :e |
-		(e isTaggedWith: tag)
-			ifFalse: [ e tagWith: tag ] ].
-	^tag
+		(e hasTag: tag) ifFalse: [ e tagWith: tag ] ].
+	^ tag
 ]
 
-{ #category : #DSL }
+{ #category : 'DSL' }
 DCLAbstractModule >> canOnly [
 	^self constraint: DCLCanOnlyConstraint
 ]
 
-{ #category : #DSL }
+{ #category : 'DSL' }
 DCLAbstractModule >> cannot [
 	^self constraint: DCLCannotConstraint 
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 DCLAbstractModule >> constraint: aDCLConstraint [
 	^aDCLConstraint  new
 		moduleA: self ;
 		yourself
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 DCLAbstractModule >> incomingDependencies: association for: anEntity [
 	^cache
 		at: { anEntity . #incoming . association }
 		ifAbsentPut: [ anEntity queryIncoming: association ]
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 DCLAbstractModule >> initialize [ 
 	super initialize.
 	self resetCaches 
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 DCLAbstractModule >> isFullySpecified [
 	^self model isCollection
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 DCLAbstractModule >> memberEntities [
 	self isFullySpecified
 		ifFalse: [ ^ MooseSpecializedGroup new ].
 	^memberEntities ifNotNil: [ memberEntities ] ifNil: [ memberEntities := self privateComputeMembers ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 DCLAbstractModule >> model [
 
 	^ model
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 DCLAbstractModule >> model: anObject [
 
 	model := anObject.
 	self resetCaches
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 DCLAbstractModule >> mooseModel [
 	"returns the MooseModel containing entities in my #model"
 	model isCollection ifFalse: [ ^nil ].
 	^model anyOne mooseModel
 ]
 
-{ #category : #DSL }
+{ #category : 'DSL' }
 DCLAbstractModule >> must [
 	^self constraint: DCLMustConstraint
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 DCLAbstractModule >> name [
 
 	^ name
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 DCLAbstractModule >> name: anObject [
 
 	name := anObject
 ]
 
-{ #category : #DSL }
+{ #category : 'DSL' }
 DCLAbstractModule >> onlyCan [
 	^self constraint: DCLOnlyCanConstraint
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 DCLAbstractModule >> outgoingDependencies: association for: anEntity [
 	^cache
 		at: { anEntity . #outgoing . association }
 		ifAbsentPut: [ anEntity queryOutgoing: association ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 DCLAbstractModule >> privateComputeMembers [
 	self subclassResponsibility 
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 DCLAbstractModule >> resetCaches [
 	cache := Dictionary new.
 	memberEntities := nil

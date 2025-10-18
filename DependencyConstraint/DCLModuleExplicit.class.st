@@ -2,17 +2,19 @@
 A DCLModule created with an explicit list of member entities
 "
 Class {
-	#name : #DCLModuleExplicit,
-	#superclass : #DCLAbstractModule,
-	#category : #'DependencyConstraint-Constraints'
+	#name : 'DCLModuleExplicit',
+	#superclass : 'DCLAbstractModule',
+	#category : 'DependencyConstraint-Constraints',
+	#package : 'DependencyConstraint',
+	#tag : 'Constraints'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 DCLModuleExplicit >> memberEntities: aCollection [
 	memberEntities := aCollection
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 DCLModuleExplicit >> privateComputeMembers [
 	Error signal: 'You should have given a list of member entities when creating this DCLModuleExplicit'
 ]

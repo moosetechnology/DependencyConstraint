@@ -3,12 +3,14 @@ I represent an architectural rule between two architectural modules A and B (DCL
 I specify that moduleA **must** depend on moduleB
 "
 Class {
-	#name : #DCLMustConstraint,
-	#superclass : #DCLAbstractConstraint,
-	#category : #'DependencyConstraint-Constraints'
+	#name : 'DCLMustConstraint',
+	#superclass : 'DCLAbstractConstraint',
+	#category : 'DependencyConstraint-Constraints',
+	#package : 'DependencyConstraint',
+	#tag : 'Constraints'
 }
 
-{ #category : #checking }
+{ #category : 'checking' }
 DCLMustConstraint >> check [
 	"checks whether there is a dependency from ModuleA to ModuleB.
 	If there is some, returns empty array (no violations)	
