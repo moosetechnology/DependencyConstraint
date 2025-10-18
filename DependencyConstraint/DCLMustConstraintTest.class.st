@@ -10,13 +10,13 @@ Class {
 DCLMustConstraintTest >> testCheckNotOKDepend [
 	| violations |
 	violations := (p2p5 must depend: p3) check.
-	self assert: violations size equals: 42
-	"((model entityNamed: 'Moose-TestResources-KGB-P2InteractedReferencerReferee')
+	self assert: violations size equals: 38
+	"((mooseModel entityNamed: 'Moose-TestResources-KGB-P2InteractedReferencerReferee')
 		queryAllOutgoing) size.
-		--> 26
-	 ((model entityNamed: 'Moose-TestResources-KGB-P5FullReferee')
+		--> 23
+	 ((mooseModel entityNamed: 'Moose-TestResources-KGB-P5FullReferee')
 		queryAllOutgoing) size.
-		--> 16"
+		--> 15"
 ]
 
 { #category : 'tests' }

@@ -9,11 +9,16 @@ Class {
 	#tag : 'Tests'
 }
 
-{ #category : 'initialization' }
+{ #category : 'running' }
 DCLAbstractTest >> setUp [
+	| importer |
+	super setUp.
+
 	mooseModel := FamixStModel new.
-	MoosePharoImporterTask new
-		importerClass: SmalltalkImporter ;
+
+	importer := FamixStPharoImporterTask new.
+	importer importingContext mergeClassAndMetaclass.
+	importer
 		model: mooseModel ;
 		addFromPackageNamed: #'Moose-TestResources-KGB-P1FullReferencer' ;
 		addFromPackageNamed: #'Moose-TestResources-KGB-P2InteractedReferencerReferee' ;
