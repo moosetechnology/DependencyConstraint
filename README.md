@@ -4,8 +4,10 @@ It is intended to define and check architectural constraints.
 
 It is inspired by: Valente, Terra, "A dependency constraint language to manage object-oriented software architectures", *Software Practice and Experience,* 39(12), 1073-1094, August 2009
 
-How to:
-- Create "Modules"
+## Using
+
+### Create "Modules"
+
 ```Smalltalk
 gui := DCLModule new
   name: 'gui' ;
@@ -18,14 +20,29 @@ draw := DCLModule new
   model: <a-moose-model> ;
   yourself.
 ```
-- Define constraints
+
+One can get the members of a module with the getter: `memberEntities`.
+This list is cached, in case of errors, the cache can be reseted (to force recomputing the member list) with `resetCache`.
+
+### Define constraints
+
 ```Smalltalk
 constraint := gui canOnly depend: draw.
 ```
-- Check that the constraint is verified
+### Check constraints
+
 ```Smalltalk
 violations := constraint check.
 ```
+This returns the list of dependencies that violate the constraint.
+
+## Dependency Constraint Language
+
+Possible "modules" are:
+- `DCLModuleExplicit` -- A DCLModule created with an explicit list of member entities  (with setter: `memberEntities:`)
+- `DCLModuleOnName` -- A DCLModule where member entities are computed from a regexp on their name (setter: `description:`)
+- `DCLModuleOnMooseName` -- A DCLModuleOnName where member entities are computed from a regexp on their fully qualified name (aka mooseName)
+- `DCLModuleOnPackageName` -- A DCLModuleOnName where member entities are computed from a regexp on the name of their parent packages
 
 Possible constraints are:
 - `moduleA cannot <a-dependence> moduleB` -- moduleA cannot depend on moduleB
@@ -33,9 +50,9 @@ Possible constraints are:
 - `moduleA canOnly <a-dependence> moduleB` -- moduleA can only depend on moduleB (apart from self dependencies in moduleA)
 - `moduleA onlyCan <a-dependence> moduleB` -- moduleA only, can depend on moduleB (apart from self dependencies in moduleB)
 
-The possible dependencies are:
-- `access:` -- looks for `FamixTAccesse` between the 2 modules
-- `invoke:` -- looks for `FamixTInvocation` between the 2 modules
-- `reference:` -- looks for `FamixTReference` between the 2 modules
-- `inherit:` -- looks for `FamixTInheritance` between the 2 modules
-- `dependence:` -- looks for `FamixTassociation` between the 2 modules
+Possible dependencies are:
+- `dependence:` -- looks for any dependency (`FamixTAssociation`) from a memberEntity in moduleA to a memberEntity in moduleB
+- `access:` -- looks for accesses in moduleA to variables (attributes, parameters,...) of moduleB (`FamixTAccesse`)
+- `invoke:` -- looks for invocations from moduleA methods to methods in moduleB (`FamixTInvocation`)
+- `reference:` -- looks for references in moduleA to class name of moduleB (`FamixTReference`)
+- `inherit:` -- looks for sub-classes in moduleA inheriting from super-classes in moduleB (`FamixTInheritance`)
