@@ -1,6 +1,6 @@
 "
 I represent an architectural rule between two architectural modules A and B (DCLModule).
-I specify that moduleA **cannot** depend on moduleB
+I specify that moduleA cannot have any dependency on moduleB
 "
 Class {
 	#name : 'DCLCannotConstraint',
@@ -11,21 +11,20 @@ Class {
 }
 
 { #category : 'checking' }
-DCLCannotConstraint >> check [
+DCLCannotConstraint >> fmProperties [
 
-	"checks that there is no dependency from ModuleA to ModuleB.
-	If there is none, returns empty array (no violations)	
-	If there is some, returns them"
+	^self sourceFmProperties
+]
 
-	| violations |
-	violations := Set new.
+{ #category : 'checking' }
+DCLCannotConstraint >> isViolation: entityAssociation [
+	"Violation if it's a dependency to ModuleB, anything else is OK"
 
-	moduleA memberEntities do: [ :entityA || queryResultA |
-		queryResultA := self outgoingDependenciesFor: entityA in:  moduleA.
-		(moduleB memberEntities do: [ :entityB | 
-			(queryResultA within: entityB)
-				ifNotEmpty: [ :dependenciesToB | violations addAll: dependenciesToB ]
-		])
-	].
-	^ violations
+	^self result: entityAssociation target belongsTo: moduleB
+]
+
+{ #category : 'checking' }
+DCLCannotConstraint >> moduleToCheck [
+
+	^moduleA
 ]

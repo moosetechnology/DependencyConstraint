@@ -1,6 +1,6 @@
 "
 I represent an architectural rule between two architectural modules A and B (DCLModule).
-I specify that moduleA **can only** depend on moduleB (or on itself)
+I specify that moduleA cannot depend on any other module than moduleB (and itself)
 "
 Class {
 	#name : 'DCLCanOnlyConstraint',
@@ -11,21 +11,21 @@ Class {
 }
 
 { #category : 'checking' }
-DCLCanOnlyConstraint >> check [
-	"checks whether ModuleA only depends on ModuleB (ignoring self dependencies).
-	If yes, returns empty array (no violations)	
-	If there are other dependencies, return them"
+DCLCanOnlyConstraint >> fmProperties [
 
-	| violations |
-	violations := Set new.
+	^self sourceFmProperties
+]
 
-	moduleA memberEntities do: [ :entityA || queryResultA |
-		queryResultA := (self outgoingDependenciesFor: entityA in:  moduleA)
-			withoutSelfLoops.
-		moduleB memberEntities do: [:entityB |
-			queryResultA := queryResultA outOf: entityB ].
-		violations addAll: queryResultA.
-	].
-	^violations
+{ #category : 'checking' }
+DCLCanOnlyConstraint >> isViolation: entityAssociation [
+	"Violation if dependency to anything else than ModuleA or ModuleB"
 
+	^(self result: entityAssociation target belongsTo: moduleA) not and:
+	[ (self result: entityAssociation target belongsTo: moduleB) not ]
+]
+
+{ #category : 'checking' }
+DCLCanOnlyConstraint >> moduleToCheck [
+
+	^moduleA
 ]

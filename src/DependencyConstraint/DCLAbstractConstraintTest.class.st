@@ -16,24 +16,24 @@ Class {
 DCLAbstractConstraintTest >> setUp [
 	super setUp.
 
-	p2p5 := DCLModuleOnName new
+	p2p5 := DCLModuleOnMooseName new
 		name: 'p2p5' ;
-		description: '.*-P[25].*' ;
+		description: '.*M[12]P[25].*' ;
 		model: mooseModel ;
 		yourself.
-	p3 := DCLModuleOnName new
+	p3 := DCLModuleOnMooseName new
 		name: 'p3' ;
-		description: '.*-P3.*' ;
+		description: '.*M1P3.*' ;
 		model: mooseModel ;
 		yourself.
-	p13 := DCLModuleOnName new
+	p13 := DCLModuleOnMooseName new
 		name: 'p13' ;
-		description: '.*-P13.*' ;
+		description: '.*M7P13.*' ;
 		model: mooseModel ;
 		yourself.
-	p14 := DCLModuleOnName new
+	p14 := DCLModuleOnMooseName new
 		name: 'p14' ;
-		description: '.*-P14.*' ;
+		description: '.*M7P14.*' ;
 		model: mooseModel ;
 		yourself.
 

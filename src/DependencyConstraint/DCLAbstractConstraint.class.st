@@ -1,22 +1,24 @@
 "
 I represent an architectural rule between two architectural modules (DCLModule).
 
-Rule can be verified by #check that will reutrn a list of violations if any
+Rule can be verified by #check that will return a list of violations if any
 
 dependencies between modules can be:
 - #access:
 - #invoke:
 - #reference:
 - #inherit:
-- #depend: (all four preceeding together)
+- #depend: (any dependency)
+- #association:to: (specified with a Famix dependency)
 "
 Class {
 	#name : 'DCLAbstractConstraint',
 	#superclass : 'Object',
 	#instVars : [
 		'moduleB',
-		'association',
-		'moduleA'
+		'moduleA',
+		'violations',
+		'associations'
 	],
 	#category : 'DependencyConstraint-Constraints',
 	#package : 'DependencyConstraint',
@@ -25,48 +27,102 @@ Class {
 
 { #category : 'DSL' }
 DCLAbstractConstraint >> access: aDCLModule [
-	association := FamixTAccess.
-	moduleB := aDCLModule
+
+	self metaAssociation: FamixTAccess opposite: aDCLModule
+]
+
+{ #category : 'checking' }
+DCLAbstractConstraint >> allAssociationsOn: anEntity forFMProperties: fmProperties [
+	"For each fmProperty finds associations from (or to) anEntity.
+	 - first checks that the entity can have this type of relation
+	 - then call the accessor fot that property on anEntity"
+
+	^fmProperties
+		flatCollect: [ :aFmProperty |
+			(anEntity usesFamixTrait: aFmProperty type implementingClass)
+				ifTrue: [ (anEntity perform: aFmProperty opposite name) ifNil: [ #() ] ]
+				ifFalse: [ #() ]
+		].
+	
+fmProperties
+		collect: [ :aFmProperty |
+			(anEntity usesFamixTrait: aFmProperty type implementingClass)
+				ifTrue: [ anEntity perform: aFmProperty opposite name ]
+				ifFalse: [ #() ]
+		]
+]
+
+{ #category : 'DSL' }
+DCLAbstractConstraint >> associationClassesFor: aFamixTrait [
+	"returns the concrete classes of ModuleA's metamodel that can implement aFamixTrait"
+
+	^moduleA model metamodel concreteImplementingClasses select: [ :c |
+		  c usesFamixTrait: aFamixTrait ]
 ]
 
 { #category : 'accessing' }
-DCLAbstractConstraint >> association [
+DCLAbstractConstraint >> associations [
 
-	^ association
+	^ associations
 ]
 
 { #category : 'accessing' }
-DCLAbstractConstraint >> association: anObject [
+DCLAbstractConstraint >> associations: anObject [
 
-	association := anObject
+	associations := anObject
 ]
 
 { #category : 'checking' }
 DCLAbstractConstraint >> check [
-	self subclassResponsibility 
+
+	| fmProperties |
+
+	fmProperties := self fmProperties.
+	violations removeAll.
+
+	self moduleToCheck memberEntities do: [ :entity |
+		(self allAssociationsOn: entity forFMProperties: fmProperties)
+			do: [ :entityAssociation |
+				(self isViolation: entityAssociation)
+					ifTrue: [ violations add: entityAssociation ]
+		]
+	].
+
+	^ violations
 ]
 
 { #category : 'DSL' }
 DCLAbstractConstraint >> depend: aDCLModule [
-	association := FamixTAssociation.
-	moduleB := aDCLModule
+
+	self metaAssociation: FamixTAssociation opposite: aDCLModule
 ]
 
-{ #category : 'accessing' }
-DCLAbstractConstraint >> incomingDependenciesFor: entity in: module [
-	^module incomingDependencies: association for: entity
+{ #category : 'checking' }
+DCLAbstractConstraint >> fmProperties [
+	"must return the fmProperties associated with all the #associations of this constraint
+	 The choice is between the #source or #target properties of these associations"
+
+	self subclassResponsibility 
 ]
 
 { #category : 'DSL' }
 DCLAbstractConstraint >> inherit: aDCLModule [
-	association := FamixTInheritance.
-	moduleB := aDCLModule
+
+	self metaAssociation: FamixTInheritance opposite: aDCLModule
+]
+
+{ #category : 'initialization' }
+DCLAbstractConstraint >> initialize [ 
+
+	super initialize.
+
+	violations := OrderedCollection new.
 ]
 
 { #category : 'DSL' }
 DCLAbstractConstraint >> invoke: aDCLModule [
-	association := FamixTInvocation.
-	moduleB := aDCLModule
+
+	self metaAssociation: FamixTInvocation opposite: aDCLModule
 ]
 
 { #category : 'testing' }
@@ -77,8 +133,21 @@ a isNil.
 		[ moduleA isFullySpecified and: 
 		[ moduleB isNotNil and:
 		[ moduleB isFullySpecified and:
-		[ association notNil ] ] ] ].
+		[ associations notNil ] ] ] ].
 
+]
+
+{ #category : 'checking' }
+DCLAbstractConstraint >> isViolation: entityAssociation [
+
+	self subclassResponsibility 
+]
+
+{ #category : 'DSL' }
+DCLAbstractConstraint >> metaAssociation: aFamixTrait opposite: aDCLModule [
+
+	associations := self associationClassesFor: aFamixTrait.
+	moduleB := aDCLModule
 ]
 
 { #category : 'accessing' }
@@ -90,7 +159,8 @@ DCLAbstractConstraint >> moduleA [
 { #category : 'accessing' }
 DCLAbstractConstraint >> moduleA: anObject [
 
-	moduleA := anObject
+	moduleA := anObject.
+
 ]
 
 { #category : 'accessing' }
@@ -105,18 +175,44 @@ DCLAbstractConstraint >> moduleB: anObject [
 	moduleB := anObject
 ]
 
-{ #category : 'accessing' }
-DCLAbstractConstraint >> outgoingDependenciesFor: entity in: module [
-	^module outgoingDependencies: association for: entity
+{ #category : 'checking' }
+DCLAbstractConstraint >> moduleToCheck [
+
+	self subclassResponsibility 
 ]
 
 { #category : 'DSL' }
 DCLAbstractConstraint >> reference: aDCLModule [
-	association := FamixTReference.
-	moduleB := aDCLModule
+
+	self metaAssociation: FamixTReference opposite: aDCLModule
+]
+
+{ #category : 'checking' }
+DCLAbstractConstraint >> result: result belongsTo: module [
+
+	^result isCollection
+		ifTrue: [ result anySatisfy: [ :entity | self result: entity belongsTo: module ] ]
+		ifFalse: [ module memberEntities includes: result ]
+]
+
+{ #category : 'accessing' }
+DCLAbstractConstraint >> sourceFmProperties [
+	"collects all fmProperties that are source of any of the #associtions"
+
+	^associations collect: [ :asso |
+		(moduleA model metamodel fmTypeOf: asso) allProperties detect: #isSource
+	].
+]
+
+{ #category : 'accessing' }
+DCLAbstractConstraint >> targetFmProperties [
+	"collects all fmProperties that are target of any of the #associations"
+
+	^ associations collect: [ :asso |
+		  (moduleA model metamodel fmTypeOf: asso) allProperties detect: #isTarget ]
 ]
 
 { #category : 'accessing' }
 DCLAbstractConstraint >> violations [
-	^self check
+	^violations
 ]

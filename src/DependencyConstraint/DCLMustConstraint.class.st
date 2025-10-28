@@ -1,10 +1,13 @@
 "
 I represent an architectural rule between two architectural modules A and B (DCLModule).
-I specify that moduleA **must** depend on moduleB
+I specify that moduleA must have dependencies on moduleB
 "
 Class {
 	#name : 'DCLMustConstraint',
 	#superclass : 'DCLAbstractConstraint',
+	#instVars : [
+		'foundDependencyToB'
+	],
 	#category : 'DependencyConstraint-Constraints',
 	#package : 'DependencyConstraint',
 	#tag : 'Constraints'
@@ -12,20 +15,41 @@ Class {
 
 { #category : 'checking' }
 DCLMustConstraint >> check [
-	"checks whether there is a dependency from ModuleA to ModuleB.
-	If there is some, returns empty array (no violations)	
-	If there is none, returns all dependencies from moduleA"
+	"overrides #check because behaviour is very different:
+	If there is 1 association from ModuleA to Module B, return empty array (no violations)	
+	If there are none, returns all dependencies from ModuleA"
 
-	| violations |
-	violations := Set new.
+	foundDependencyToB := false.
 
-	moduleA memberEntities do: [ :entityA || queryResultA |
-		queryResultA := self outgoingDependenciesFor: entityA in: moduleA.
-		moduleB memberEntities do: [:entityB |
-			(queryResultA within: entityB)
-				ifNotEmpty: [ ^#() ] ].
-		violations addAll: queryResultA
-	].
+	super check.
+
+	foundDependencyToB ifTrue: [ violations removeAll ].
+
 	^violations
+]
 
+{ #category : 'checking' }
+DCLMustConstraint >> fmProperties [
+
+	^self sourceFmProperties
+]
+
+{ #category : 'checking' }
+DCLMustConstraint >> isViolation: entityAssociation [
+	"Violation if there is a dependency to something not ModuleA or Module B
+	 If there is a dependency to ModuleA: ignore it (not a violation)
+	 If there is a dependency to ModuleB: record it was found (and not a violation)"
+
+	(self result: entityAssociation target belongsTo: moduleA)
+		ifTrue: [ ^false ].
+
+	^(self result: entityAssociation target belongsTo: moduleB)
+		ifTrue: [ foundDependencyToB :=  true. false ]
+		ifFalse: [ true ]
+]
+
+{ #category : 'checking' }
+DCLMustConstraint >> moduleToCheck [
+
+	^moduleA
 ]

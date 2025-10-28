@@ -70,9 +70,10 @@ DCLAbstractModule >> isFullySpecified [
 
 { #category : 'accessing' }
 DCLAbstractModule >> memberEntities [
-	self isFullySpecified
-		ifFalse: [ ^ MooseSpecializedGroup new ].
-	^memberEntities ifNotNil: [ memberEntities ] ifNil: [ memberEntities := self privateComputeMembers ]
+
+	self isFullySpecified ifFalse: [ ^ MooseSpecializedGroup new ].
+
+	^ memberEntities ifNil: [ memberEntities := self privateComputeMembers ]
 ]
 
 { #category : 'accessing' }

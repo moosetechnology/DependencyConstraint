@@ -10,26 +10,28 @@ Class {
 DCLMustConstraintTest >> testCheckNotOKDepend [
 	| violations |
 	violations := (p2p5 must depend: p3) check.
-	self assert: violations size equals: 38
+	self assert: violations size equals: 18
 	"((mooseModel entityNamed: 'Moose-TestResources-KGB-P2InteractedReferencerReferee')
-		queryAllOutgoing) size.
-		--> 23
+		queryAllOutgoing) withoutSelfLoops.
+		--> 14 (15 - 'M1P2C3ReferencerInSideRefereeOutSide-|>M2P5C11FullRefereeOutSide)'
 	 ((mooseModel entityNamed: 'Moose-TestResources-KGB-P5FullReferee')
-		queryAllOutgoing) size.
-		--> 15"
+		queryAllOutgoing) withoutSelfLoops.
+		--> 4"
 ]
 
 { #category : 'tests' }
 DCLMustConstraintTest >> testCheckNotOKInvoke [
 	| violations |
+
 	violations := (p2p5 must invoke: p3) check.
-	self assert: violations size equals: 22
+	self assert: violations size equals: 13
+
 	"((model entityNamed: 'Moose-TestResources-KGB-P2InteractedReferencerReferee')
-		queryOutgoing: FamixTInvocation) size.
-		--> 14
+		queryOutgoing: FamixTInvocation) withoutSelfLoops.
+		--> 10
 	 ((model entityNamed: 'Moose-TestResources-KGB-P5FullReferee')
-		queryOutgoing: FamixTInvocation) size.
-		--> 8"
+		queryOutgoing: FamixTInvocation) withoutSelfLoops.
+		--> 3"
 ]
 
 { #category : 'tests' }
