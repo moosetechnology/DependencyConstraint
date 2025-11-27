@@ -24,7 +24,7 @@ BaselineOfArchitecturalConstraints >> defineDependencies: spec [
 		baseline: 'Famix'
 		with: [ 
 			spec
-				loads: #( 'Core' 'Minimal' 'Basic' );
+				loads: #( 'BasicTraits' 'Basic' );
 				repository: 'github://moosetechnology/Famix:development' ]
 ]
 
