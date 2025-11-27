@@ -7,8 +7,8 @@ Class {
 		'p13',
 		'p14'
 	],
-	#category : 'DependencyConstraint-Tests',
-	#package : 'DependencyConstraint',
+	#category : 'ArchitecturalConstraints-Tests',
+	#package : 'ArchitecturalConstraints',
 	#tag : 'Tests'
 }
 

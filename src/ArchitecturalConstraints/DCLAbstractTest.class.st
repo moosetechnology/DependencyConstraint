@@ -4,8 +4,8 @@ Class {
 	#instVars : [
 		'mooseModel'
 	],
-	#category : 'DependencyConstraint-Tests',
-	#package : 'DependencyConstraint',
+	#category : 'ArchitecturalConstraints-Tests',
+	#package : 'ArchitecturalConstraints',
 	#tag : 'Tests'
 }
 

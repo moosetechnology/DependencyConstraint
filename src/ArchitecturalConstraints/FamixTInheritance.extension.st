@@ -1,6 +1,6 @@
 Extension { #name : 'FamixTInheritance' }
 
-{ #category : '*DependencyConstraint' }
+{ #category : '*ArchitecturalConstraints' }
 FamixTInheritance >> querySelector [
 
 	^ #queryOutgoingInheritances

@@ -5,8 +5,8 @@ I specify no other entities than those in moduleA can depend on moduleB (or modu
 Class {
 	#name : 'DCLOnlyCanConstraint',
 	#superclass : 'DCLAbstractConstraint',
-	#category : 'DependencyConstraint-Constraints',
-	#package : 'DependencyConstraint',
+	#category : 'ArchitecturalConstraints-Constraints',
+	#package : 'ArchitecturalConstraints',
 	#tag : 'Constraints'
 }
 

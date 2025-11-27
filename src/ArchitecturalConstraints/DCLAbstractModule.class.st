@@ -17,8 +17,8 @@ Class {
 		'cache',
 		'memberEntities'
 	],
-	#category : 'DependencyConstraint-Constraints',
-	#package : 'DependencyConstraint',
+	#category : 'ArchitecturalConstraints-Constraints',
+	#package : 'ArchitecturalConstraints',
 	#tag : 'Constraints'
 }
 

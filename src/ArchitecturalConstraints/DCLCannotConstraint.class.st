@@ -5,8 +5,8 @@ I specify that moduleA cannot have any dependency on moduleB
 Class {
 	#name : 'DCLCannotConstraint',
 	#superclass : 'DCLAbstractConstraint',
-	#category : 'DependencyConstraint-Constraints',
-	#package : 'DependencyConstraint',
+	#category : 'ArchitecturalConstraints-Constraints',
+	#package : 'ArchitecturalConstraints',
 	#tag : 'Constraints'
 }
 

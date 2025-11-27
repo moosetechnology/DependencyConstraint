@@ -4,8 +4,8 @@ A DCLModule where member entities are computed from a regexp on their simple nam
 Class {
 	#name : 'DCLModuleOnName',
 	#superclass : 'DCLModuleOnRegexp',
-	#category : 'DependencyConstraint-Constraints',
-	#package : 'DependencyConstraint',
+	#category : 'ArchitecturalConstraints-Constraints',
+	#package : 'ArchitecturalConstraints',
 	#tag : 'Constraints'
 }
 

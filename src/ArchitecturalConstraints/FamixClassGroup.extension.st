@@ -1,6 +1,6 @@
 Extension { #name : 'FamixClassGroup' }
 
-{ #category : '*DependencyConstraint' }
+{ #category : '*ArchitecturalConstraints' }
 FamixClassGroup >> queryOutgoingDependencies: aClassGroup byType: aFAMIXAssociationClass [
 
 	"queries all dependencies to a class group that has a given type"

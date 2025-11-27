@@ -1,6 +1,6 @@
 Extension { #name : 'FamixTInvocation' }
 
-{ #category : '*DependencyConstraint' }
+{ #category : '*ArchitecturalConstraints' }
 FamixTInvocation >> querySelector [
 
 	^ #queryAllOutgoingInvocations

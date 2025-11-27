@@ -1,6 +1,6 @@
 Extension { #name : 'MooseModel' }
 
-{ #category : '*DependencyConstraint' }
+{ #category : '*ArchitecturalConstraints' }
 MooseModel >> allModelScopingEntities [
 
 	^ self sourceLanguage isJava 

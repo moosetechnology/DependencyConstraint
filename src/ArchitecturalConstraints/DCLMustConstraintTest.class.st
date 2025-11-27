@@ -1,8 +1,8 @@
 Class {
 	#name : 'DCLMustConstraintTest',
 	#superclass : 'DCLAbstractConstraintTest',
-	#category : 'DependencyConstraint-Tests',
-	#package : 'DependencyConstraint',
+	#category : 'ArchitecturalConstraints-Tests',
+	#package : 'ArchitecturalConstraints',
 	#tag : 'Tests'
 }
 

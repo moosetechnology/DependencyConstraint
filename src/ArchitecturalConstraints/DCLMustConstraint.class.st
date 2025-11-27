@@ -8,8 +8,8 @@ Class {
 	#instVars : [
 		'foundDependencyToB'
 	],
-	#category : 'DependencyConstraint-Constraints',
-	#package : 'DependencyConstraint',
+	#category : 'ArchitecturalConstraints-Constraints',
+	#package : 'ArchitecturalConstraints',
 	#tag : 'Constraints'
 }
 

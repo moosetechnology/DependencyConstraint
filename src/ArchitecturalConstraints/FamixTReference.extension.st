@@ -1,6 +1,6 @@
 Extension { #name : 'FamixTReference' }
 
-{ #category : '*DependencyConstraint' }
+{ #category : '*ArchitecturalConstraints' }
 FamixTReference >> querySelector [
 
 	^ #queryOutgoingReferences
