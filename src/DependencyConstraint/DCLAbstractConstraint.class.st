@@ -40,15 +40,23 @@ DCLAbstractConstraint >> allAssociationsOn: anEntity forFMProperties: fmProperti
 	^fmProperties
 		flatCollect: [ :aFmProperty |
 			(anEntity usesFamixTrait: aFmProperty type implementingClass)
-				ifTrue: [ (anEntity perform: aFmProperty opposite name) ifNil: [ #() ] ]
+				ifTrue: [ self allAssociationsOn: anEntity forFMProperty: aFmProperty ]
 				ifFalse: [ #() ]
 		].
-	
-fmProperties
-		collect: [ :aFmProperty |
-			(anEntity usesFamixTrait: aFmProperty type implementingClass)
-				ifTrue: [ anEntity perform: aFmProperty opposite name ]
-				ifFalse: [ #() ]
+]
+
+{ #category : 'checking' }
+DCLAbstractConstraint >> allAssociationsOn: anEntity forFMProperty: aFmProperty [
+	"Finds associations from/to anEntity by calling the accessor ('aFmProperty opposite name')
+	 for that property on anEntity"
+
+	| assoc |
+	assoc := anEntity perform: aFmProperty opposite name.
+	^assoc
+		ifNil: [ #() ]
+		ifNotNil: [ assoc isCollection
+			ifTrue: [ assoc ]
+			ifFalse: [ { assoc } ]
 		]
 ]
 
