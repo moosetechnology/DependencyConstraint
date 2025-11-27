@@ -1,6 +1,6 @@
 Class {
 	#name : 'BaselineOfArchitecturalConstraints',
-	#superclass : 'Object',
+	#superclass : 'BaselineOf',
 	#category : 'BaselineOfArchitecturalConstraints',
 	#package : 'BaselineOfArchitecturalConstraints'
 }
