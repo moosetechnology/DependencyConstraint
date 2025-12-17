@@ -18,3 +18,10 @@ DCLModuleExplicit >> memberEntities: aCollection [
 DCLModuleExplicit >> privateComputeMembers [
 	Error signal: 'You should have given a list of member entities when creating this DCLModuleExplicit'
 ]
+
+{ #category : 'initialization' }
+DCLModuleExplicit >> resetCaches [
+	"do not wipe out #memberentities of explicit module"
+
+	cache := Dictionary new
+]
