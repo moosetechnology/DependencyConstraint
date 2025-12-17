@@ -4,9 +4,9 @@ A DCLModule created with an explicit list of member entities  (setter: `memberEn
 Class {
 	#name : 'DCLModuleExplicit',
 	#superclass : 'DCLAbstractModule',
-	#category : 'ArchitecturalConstraints-Constraints',
+	#category : 'ArchitecturalConstraints-Modules',
 	#package : 'ArchitecturalConstraints',
-	#tag : 'Constraints'
+	#tag : 'Modules'
 }
 
 { #category : 'testing' }

@@ -17,9 +17,9 @@ Class {
 		'cache',
 		'memberEntities'
 	],
-	#category : 'ArchitecturalConstraints-Constraints',
+	#category : 'ArchitecturalConstraints-Modules',
 	#package : 'ArchitecturalConstraints',
-	#tag : 'Constraints'
+	#tag : 'Modules'
 }
 
 { #category : 'converting' }

@@ -4,9 +4,9 @@ A DCLModule where member entities are computed from a regexp on their mooseName
 Class {
 	#name : 'DCLModuleOnMooseName',
 	#superclass : 'DCLModuleOnRegexp',
-	#category : 'ArchitecturalConstraints-Constraints',
+	#category : 'ArchitecturalConstraints-Modules',
 	#package : 'ArchitecturalConstraints',
-	#tag : 'Constraints'
+	#tag : 'Modules'
 }
 
 { #category : 'testing' }
