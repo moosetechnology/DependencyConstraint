@@ -9,9 +9,23 @@ Class {
 	#tag : 'Constraints'
 }
 
+{ #category : 'testing' }
+DCLModuleExplicit >> isFullySpecified [
+	^memberEntities isCollection
+]
+
 { #category : 'accessing' }
 DCLModuleExplicit >> memberEntities: aCollection [
 	memberEntities := aCollection
+]
+
+{ #category : 'accessing' }
+DCLModuleExplicit >> model [
+
+	^ model ifNil: [
+		self model: (self memberEntities anyOne mooseModel).
+		self model
+	]
 ]
 
 { #category : 'accessing' }
