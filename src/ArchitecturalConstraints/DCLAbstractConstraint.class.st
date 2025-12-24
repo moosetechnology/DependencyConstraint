@@ -92,7 +92,9 @@ DCLAbstractConstraint >> check [
 		(self allAssociationsOn: entity forFMProperties: fmProperties)
 			do: [ :entityAssociation |
 				(self isViolation: entityAssociation)
-					ifTrue: [ violations add: entityAssociation ]
+					ifTrue: [
+						violations add: ((DCLViolation for: entityAssociation)
+							constraint: self) ]
 		]
 	].
 
@@ -125,6 +127,7 @@ DCLAbstractConstraint >> initialize [
 	super initialize.
 
 	violations := OrderedCollection new.
+	MiApplication current registerProducer: self for: DCLViolation.
 ]
 
 { #category : 'DSL' }
@@ -187,6 +190,12 @@ DCLAbstractConstraint >> moduleB: anObject [
 DCLAbstractConstraint >> moduleToCheck [
 
 	self subclassResponsibility 
+]
+
+{ #category : 'accessing' }
+DCLAbstractConstraint >> mooseModel [
+
+	^moduleA mooseModel
 ]
 
 { #category : 'DSL' }
