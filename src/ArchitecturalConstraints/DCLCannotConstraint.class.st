@@ -23,6 +23,12 @@ DCLCannotConstraint >> isViolation: entityAssociation [
 	^self result: entityAssociation target belongsTo: moduleB
 ]
 
+{ #category : 'brokerage' }
+DCLCannotConstraint >> itemsFor: aClass [ 
+
+	^violations 
+]
+
 { #category : 'checking' }
 DCLCannotConstraint >> moduleToCheck [
 

@@ -18,7 +18,8 @@ Class {
 		'moduleB',
 		'moduleA',
 		'violations',
-		'associations'
+		'associations',
+		'description'
 	],
 	#category : 'ArchitecturalConstraints-Constraints',
 	#package : 'ArchitecturalConstraints',
@@ -105,6 +106,18 @@ DCLAbstractConstraint >> check [
 DCLAbstractConstraint >> depend: aDCLModule [
 
 	self metaAssociation: FamixTAssociation opposite: aDCLModule
+]
+
+{ #category : 'accessing' }
+DCLAbstractConstraint >> description [
+
+	^description ifNil: [ 'An undescribed architectural constraint' ]
+]
+
+{ #category : 'accessing' }
+DCLAbstractConstraint >> description: aString [
+
+	description := aString 
 ]
 
 { #category : 'checking' }
