@@ -19,7 +19,8 @@ Class {
 		'moduleA',
 		'violations',
 		'associations',
-		'description'
+		'description',
+		'condition'
 	],
 	#category : 'ArchitecturalConstraints-Constraints',
 	#package : 'ArchitecturalConstraints',
@@ -61,6 +62,14 @@ DCLAbstractConstraint >> allAssociationsOn: anEntity forFMProperty: aFmProperty 
 		]
 ]
 
+{ #category : 'converting' }
+DCLAbstractConstraint >> asCBCondition [
+
+	^ condition ifNil: [ 
+		condition := FamixCBCondition named: self description on: (DCLQueryHandler on: self) 
+		]
+]
+
 { #category : 'DSL' }
 DCLAbstractConstraint >> associationClassesFor: aFamixTrait [
 	"returns the concrete classes of ModuleA's metamodel that can implement aFamixTrait"
@@ -84,21 +93,13 @@ DCLAbstractConstraint >> associations: anObject [
 { #category : 'checking' }
 DCLAbstractConstraint >> check [
 
-	| fmProperties |
-
-	fmProperties := self fmProperties.
-	violations removeAll.
-
-	self moduleToCheck memberEntities do: [ :entity |
-		(self allAssociationsOn: entity forFMProperties: fmProperties)
-			do: [ :entityAssociation |
-				(self isViolation: entityAssociation)
-					ifTrue: [
-						violations add: ((DCLViolation for: entityAssociation)
-							constraint: self) ]
-		]
-	].
-
+	| cond |
+	
+	cond := self asCBCondition.
+	cond removeAllViolations.
+	"FamixCBCondition >> runOn: requires a collection so we pass an empty array as the entities are already set in memberEntities"
+	cond runOn: #(  ). 
+	violations := cond violations.
 	^ violations
 ]
 
@@ -117,7 +118,8 @@ DCLAbstractConstraint >> description [
 { #category : 'accessing' }
 DCLAbstractConstraint >> description: aString [
 
-	description := aString 
+	description := aString.
+	condition ifNotNil: [ condition name: aString ]
 ]
 
 { #category : 'checking' }
@@ -135,12 +137,12 @@ DCLAbstractConstraint >> inherit: aDCLModule [
 ]
 
 { #category : 'initialization' }
-DCLAbstractConstraint >> initialize [ 
+DCLAbstractConstraint >> initialize [
 
 	super initialize.
 
 	violations := OrderedCollection new.
-	MiApplication current registerProducer: self for: DCLViolation.
+	MiApplication current registerProducer: self for: FamixCBViolation
 ]
 
 { #category : 'DSL' }
@@ -240,6 +242,23 @@ DCLAbstractConstraint >> targetFmProperties [
 
 	^ associations collect: [ :asso |
 		  (moduleA model metamodel fmTypeOf: asso) allProperties detect: #isTarget ]
+]
+
+{ #category : 'accessing' }
+DCLAbstractConstraint >> violatingAssociations [
+
+	| fmProperties result |
+	fmProperties := self fmProperties.
+	result := OrderedCollection new.
+	self moduleToCheck memberEntities do: [ :entity |
+		
+		result addAll: 
+			((self allAssociationsOn: entity forFMProperties: fmProperties) select: [ :assoc | 
+					self isViolation: assoc 
+				]) 
+	].
+	
+	^ result
 ]
 
 { #category : 'accessing' }
