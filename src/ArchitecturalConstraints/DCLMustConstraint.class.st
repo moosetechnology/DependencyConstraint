@@ -53,3 +53,16 @@ DCLMustConstraint >> moduleToCheck [
 
 	^moduleA
 ]
+
+{ #category : 'accessing' }
+DCLMustConstraint >> violatingAssociations [
+
+	| result |
+	foundDependencyToB := false.
+
+	result := super violatingAssociations.
+
+	^ foundDependencyToB
+		  ifTrue: [ OrderedCollection new ]
+		  ifFalse: [ result ]
+]
