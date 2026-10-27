@@ -191,12 +191,6 @@ DCLAbstractConstraint >> moduleToCheck [
 ]
 
 { #category : 'accessing' }
-DCLAbstractConstraint >> mooseModel [
-
-	^moduleA mooseModel
-]
-
-{ #category : 'accessing' }
 DCLAbstractConstraint >> name [
 
 	^ name ifNil: [ self description ]
