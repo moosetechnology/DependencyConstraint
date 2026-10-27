@@ -236,7 +236,7 @@ DCLAbstractConstraint >> runOn: aCollection [
 { #category : 'accessing' }
 DCLAbstractConstraint >> severity [
 
-	^ FamixCBErrorSeverity
+	^ severity ifNil: [ FamixCBErrorSeverity ]
 ]
 
 { #category : 'accessing' }
