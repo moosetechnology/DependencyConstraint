@@ -13,11 +13,10 @@ dependencies between modules can be:
 "
 Class {
 	#name : 'DCLAbstractConstraint',
-	#superclass : 'Object',
+	#superclass : 'FamixCBCondition',
 	#instVars : [
 		'moduleB',
 		'moduleA',
-		'violations',
 		'associations',
 		'description'
 	],
@@ -84,20 +83,7 @@ DCLAbstractConstraint >> associations: anObject [
 { #category : 'checking' }
 DCLAbstractConstraint >> check [
 
-	| fmProperties |
-
-	fmProperties := self fmProperties.
-	violations removeAll.
-
-	self moduleToCheck memberEntities do: [ :entity |
-		(self allAssociationsOn: entity forFMProperties: fmProperties)
-			do: [ :entityAssociation |
-				(self isViolation: entityAssociation)
-					ifTrue: [
-						violations add: ((DCLViolation for: entityAssociation)
-							constraint: self) ]
-		]
-	].
+	violations := self runOn: self moduleToCheck memberEntities.
 
 	^ violations
 ]
@@ -117,7 +103,8 @@ DCLAbstractConstraint >> description [
 { #category : 'accessing' }
 DCLAbstractConstraint >> description: aString [
 
-	description := aString 
+	description := aString.
+	name := aString.
 ]
 
 { #category : 'checking' }
@@ -139,8 +126,7 @@ DCLAbstractConstraint >> initialize [
 
 	super initialize.
 
-	violations := OrderedCollection new.
-	MiApplication current registerProducer: self for: DCLViolation.
+	MiApplication current registerProducer: self for: FamixCBViolation.
 ]
 
 { #category : 'DSL' }
@@ -225,6 +211,26 @@ DCLAbstractConstraint >> result: result belongsTo: module [
 		ifFalse: [ module memberEntities includes: result ]
 ]
 
+{ #category : 'running' }
+DCLAbstractConstraint >> runOn: aCollection [
+
+	| fmProperties |
+	fmProperties := self fmProperties.
+	self removeAllViolations.
+
+	aCollection do: [ :entity |
+			(self allAssociationsOn: entity forFMProperties: fmProperties) do: [ :entityAssociation |
+				(self isViolation: entityAssociation) ifTrue: [ 
+					
+					|cbViolation|
+					cbViolation := FamixCBViolation condition: self violatedBy: entityAssociation.
+					self addViolation: cbViolation.
+					
+					] ] ].
+
+	^ self violations 
+]
+
 { #category : 'accessing' }
 DCLAbstractConstraint >> sourceFmProperties [
 	"collects all fmProperties that are source of any of the #associtions"
@@ -240,9 +246,4 @@ DCLAbstractConstraint >> targetFmProperties [
 
 	^ associations collect: [ :asso |
 		  (moduleA model metamodel fmTypeOf: asso) allProperties detect: #isTarget ]
-]
-
-{ #category : 'accessing' }
-DCLAbstractConstraint >> violations [
-	^violations
 ]
