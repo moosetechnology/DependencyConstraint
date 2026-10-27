@@ -234,6 +234,12 @@ DCLAbstractConstraint >> runOn: aCollection [
 ]
 
 { #category : 'accessing' }
+DCLAbstractConstraint >> severity [
+
+	^ FamixCBErrorSeverity
+]
+
+{ #category : 'accessing' }
 DCLAbstractConstraint >> sourceFmProperties [
 	"collects all fmProperties that are source of any of the #associtions"
 
