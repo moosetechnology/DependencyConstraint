@@ -83,9 +83,9 @@ DCLAbstractConstraint >> associations: anObject [
 { #category : 'checking' }
 DCLAbstractConstraint >> check [
 
-	violations := self runOn: self moduleToCheck memberEntities.
+	self runOn: self moduleToCheck memberEntities.
 
-	^ violations
+	^ self violations
 ]
 
 { #category : 'DSL' }
@@ -104,7 +104,6 @@ DCLAbstractConstraint >> description [
 DCLAbstractConstraint >> description: aString [
 
 	description := aString.
-	name := aString.
 ]
 
 { #category : 'checking' }
@@ -197,6 +196,12 @@ DCLAbstractConstraint >> mooseModel [
 	^moduleA mooseModel
 ]
 
+{ #category : 'accessing' }
+DCLAbstractConstraint >> name [
+
+	^ name ifNil: [ self description ]
+]
+
 { #category : 'DSL' }
 DCLAbstractConstraint >> reference: aDCLModule [
 
@@ -214,21 +219,18 @@ DCLAbstractConstraint >> result: result belongsTo: module [
 { #category : 'running' }
 DCLAbstractConstraint >> runOn: aCollection [
 
-	| fmProperties |
+	| fmProperties members |
+	
 	fmProperties := self fmProperties.
+	members := self moduleToCheck memberEntities asSet.
+	
 	self removeAllViolations.
-
-	aCollection do: [ :entity |
-			(self allAssociationsOn: entity forFMProperties: fmProperties) do: [ :entityAssociation |
-				(self isViolation: entityAssociation) ifTrue: [ 
-					
-					|cbViolation|
-					cbViolation := FamixCBViolation condition: self violatedBy: entityAssociation.
-					self addViolation: cbViolation.
-					
-					] ] ].
-
-	^ self violations 
+	
+	(aCollection select: [ :e | members includes: e ]) do: [ :entity |
+			(self allAssociationsOn: entity forFMProperties: fmProperties) do: [ :assoc |
+				(self isViolation: assoc) ifTrue: [ 
+					self addViolation: (FamixCBViolation new violatingEntity: assoc) 
+					] ] ]
 ]
 
 { #category : 'accessing' }
