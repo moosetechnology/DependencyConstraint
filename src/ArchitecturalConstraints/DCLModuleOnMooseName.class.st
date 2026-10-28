@@ -10,11 +10,6 @@ Class {
 }
 
 { #category : 'testing' }
-DCLModuleOnMooseName >> descriptionMatches: aMooseEntity [
-	^regexp matches: aMooseEntity mooseName
-]
-
-{ #category : 'testing' }
 DCLModuleOnMooseName >> matchedStringOf: anEntity [
 
 	^ anEntity mooseName
