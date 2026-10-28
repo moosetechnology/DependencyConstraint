@@ -38,6 +38,28 @@ DCLModuleOnNameTest >> testDescriptionMatches [
 ]
 
 { #category : 'tests' }
+DCLModuleOnNameTest >> testDescriptionMatchesWithExclude [
+
+	| module |
+	
+	module := DCLModuleOnName new
+		          name: 'p123';
+		          description: '.*abc.*';
+		          exclude: '.*xyz.*';
+		          yourself.
+
+	self assert: (module descriptionMatches: (FamixStNamedEntity new
+				  name: 'abcdefg';
+				  yourself)).
+	self deny: (module descriptionMatches: (FamixStNamedEntity new
+				  name: 'abcxyz';
+				  yourself)).
+	self deny: (module descriptionMatches: (FamixStNamedEntity new
+				  name: 'xyz';
+				  yourself))
+]
+
+{ #category : 'tests' }
 DCLModuleOnNameTest >> testIsFullySpecified [
 	self deny:   (DCLModuleOnName new name: 'mod'; yourself) isFullySpecified.
 	self deny:   (DCLModuleOnName new name: 'mod'; description: '.*abc.*'; yourself) isFullySpecified.

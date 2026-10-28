@@ -6,7 +6,9 @@ Class {
 	#name : 'DCLModuleOnRegexp',
 	#superclass : 'DCLAbstractModule',
 	#instVars : [
-		'description'
+		'description',
+		'exclude',
+		'excludeRegexp'
 	],
 	#category : 'ArchitecturalConstraints-Modules',
 	#package : 'ArchitecturalConstraints',
@@ -29,7 +31,23 @@ DCLModuleOnRegexp >> description: aString [
 { #category : 'testing' }
 DCLModuleOnRegexp >> descriptionMatches: aMooseEntity [
 
-	self subclassResponsibility
+	| string |
+	string := self matchedStringOf: aMooseEntity.
+	^ (regexp matches: string) and: [ (self isExcluded: string) not ]
+]
+
+{ #category : 'testing' }
+DCLModuleOnRegexp >> exclude: aString [
+
+	exclude := aString.
+	excludeRegexp := aString ifNotNil: [ aString asRegex ].
+	self resetCaches 
+]
+
+{ #category : 'testing' }
+DCLModuleOnRegexp >> isExcluded: aString [
+
+	^ excludeRegexp notNil and: [ excludeRegexp matches: aString ]
 ]
 
 { #category : 'testing' }
@@ -37,6 +55,12 @@ DCLModuleOnRegexp >> isFullySpecified [
 	^super isFullySpecified and:
 	[(regexp notNil) and:
 	 [(regexp class canUnderstand: #matches:) ] ]
+]
+
+{ #category : 'testing' }
+DCLModuleOnRegexp >> matchedStringOf: anEntity [
+
+	self subclassResponsibility
 ]
 
 { #category : 'accessing' }
