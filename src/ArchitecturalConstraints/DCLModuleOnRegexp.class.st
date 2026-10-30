@@ -7,6 +7,7 @@ Class {
 	#superclass : 'DCLAbstractModule',
 	#instVars : [
 		'description',
+		'regexp',
 		'exclude',
 		'excludeRegexp'
 	],
@@ -34,6 +35,12 @@ DCLModuleOnRegexp >> descriptionMatches: aMooseEntity [
 	| string |
 	string := self matchedStringOf: aMooseEntity.
 	^ (regexp matches: string) and: [ (self isExcluded: string) not ]
+]
+
+{ #category : 'accessing' }
+DCLModuleOnRegexp >> exclude [
+
+	^ exclude
 ]
 
 { #category : 'testing' }

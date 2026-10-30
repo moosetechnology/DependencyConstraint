@@ -12,7 +12,6 @@ Class {
 	#superclass : 'Object',
 	#instVars : [
 		'name',
-		'regexp',
 		'model',
 		'cache',
 		'memberEntities'
