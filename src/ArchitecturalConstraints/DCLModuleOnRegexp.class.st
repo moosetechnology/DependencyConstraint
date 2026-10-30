@@ -1,6 +1,8 @@
 "
 A DCLModule where member entities are computed from a regexp
 The regexp is stored in the `description` of the module
+
+Use `exclude:` with a second regular expression to remove the entities it matches from the module.
 "
 Class {
 	#name : 'DCLModuleOnRegexp',
