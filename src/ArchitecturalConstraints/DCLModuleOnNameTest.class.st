@@ -38,6 +38,42 @@ DCLModuleOnNameTest >> testDescriptionMatches [
 ]
 
 { #category : 'tests' }
+DCLModuleOnNameTest >> testDescriptionMatchesWithExclude [
+
+	| module |
+	
+	module := DCLModuleOnName new
+		          name: 'p123';
+		          description: '.*abc.*';
+		          exclude: '.*xyz.*';
+		          yourself.
+
+	self assert: (module descriptionMatches: (FamixStNamedEntity new
+				  name: 'abcdefg';
+				  yourself)).
+	self deny: (module descriptionMatches: (FamixStNamedEntity new
+				  name: 'abcxyz';
+				  yourself)).
+	self deny: (module descriptionMatches: (FamixStNamedEntity new
+				  name: 'xyz';
+				  yourself))
+]
+
+{ #category : 'tests' }
+DCLModuleOnNameTest >> testExcludeEverything [
+
+	| module |
+	module := DCLModuleOnName new
+		          name: 'module-full';
+		          description: '.*Full.*';
+		          exclude: '.*';
+		          model: mooseModel;
+		          yourself.
+
+	self assert: module memberEntities isEmpty
+]
+
+{ #category : 'tests' }
 DCLModuleOnNameTest >> testIsFullySpecified [
 	self deny:   (DCLModuleOnName new name: 'mod'; yourself) isFullySpecified.
 	self deny:   (DCLModuleOnName new name: 'mod'; description: '.*abc.*'; yourself) isFullySpecified.
@@ -71,6 +107,21 @@ DCLModuleOnNameTest >> testMemberEntities [
 	 Moose-TestResources-KGB-P1FullReferencer
 	 Moose-TestResources-KGB-P13FullReferencer"
 
+]
+
+{ #category : 'tests' }
+DCLModuleOnNameTest >> testMemberEntitiesWithExclude [
+
+	| module |
+	module := DCLModuleOnName new
+		          name: 'module-full';
+		          description: '.*Full.*';
+		          exclude: '.*Referee.*';
+		          model: mooseModel;
+		          yourself.
+
+	self assert: module memberEntities size equals: 7.
+	self deny: (module memberEntities anySatisfy: [ :e | e name includesSubstring: 'Referee' ])
 ]
 
 { #category : 'tests' }

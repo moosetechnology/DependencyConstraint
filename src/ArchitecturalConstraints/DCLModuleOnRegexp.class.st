@@ -1,12 +1,17 @@
 "
 A DCLModule where member entities are computed from a regexp
 The regexp is stored in the `description` of the module
+
+Use `exclude:` with a second regular expression to remove the entities it matches from the module.
 "
 Class {
 	#name : 'DCLModuleOnRegexp',
 	#superclass : 'DCLAbstractModule',
 	#instVars : [
-		'description'
+		'description',
+		'regexp',
+		'exclude',
+		'excludeRegexp'
 	],
 	#category : 'ArchitecturalConstraints-Modules',
 	#package : 'ArchitecturalConstraints',
@@ -29,7 +34,29 @@ DCLModuleOnRegexp >> description: aString [
 { #category : 'testing' }
 DCLModuleOnRegexp >> descriptionMatches: aMooseEntity [
 
-	self subclassResponsibility
+	| string |
+	string := self matchedStringOf: aMooseEntity.
+	^ (regexp matches: string) and: [ (self isExcluded: string) not ]
+]
+
+{ #category : 'accessing' }
+DCLModuleOnRegexp >> exclude [
+
+	^ exclude
+]
+
+{ #category : 'testing' }
+DCLModuleOnRegexp >> exclude: aString [
+
+	exclude := aString.
+	excludeRegexp := aString ifNotNil: [ aString asRegex ].
+	self resetCaches 
+]
+
+{ #category : 'testing' }
+DCLModuleOnRegexp >> isExcluded: aString [
+
+	^ excludeRegexp notNil and: [ excludeRegexp matches: aString ]
 ]
 
 { #category : 'testing' }
@@ -37,6 +64,12 @@ DCLModuleOnRegexp >> isFullySpecified [
 	^super isFullySpecified and:
 	[(regexp notNil) and:
 	 [(regexp class canUnderstand: #matches:) ] ]
+]
+
+{ #category : 'testing' }
+DCLModuleOnRegexp >> matchedStringOf: anEntity [
+
+	self subclassResponsibility
 ]
 
 { #category : 'accessing' }
