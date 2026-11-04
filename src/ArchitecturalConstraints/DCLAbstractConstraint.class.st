@@ -13,11 +13,10 @@ dependencies between modules can be:
 "
 Class {
 	#name : 'DCLAbstractConstraint',
-	#superclass : 'Object',
+	#superclass : 'FamixCBCondition',
 	#instVars : [
 		'moduleB',
 		'moduleA',
-		'violations',
 		'associations',
 		'description'
 	],
@@ -84,22 +83,9 @@ DCLAbstractConstraint >> associations: anObject [
 { #category : 'checking' }
 DCLAbstractConstraint >> check [
 
-	| fmProperties |
+	self runOn: self moduleToCheck memberEntities.
 
-	fmProperties := self fmProperties.
-	violations removeAll.
-
-	self moduleToCheck memberEntities do: [ :entity |
-		(self allAssociationsOn: entity forFMProperties: fmProperties)
-			do: [ :entityAssociation |
-				(self isViolation: entityAssociation)
-					ifTrue: [
-						violations add: ((DCLViolation for: entityAssociation)
-							constraint: self) ]
-		]
-	].
-
-	^ violations
+	^ self violations
 ]
 
 { #category : 'DSL' }
@@ -117,7 +103,7 @@ DCLAbstractConstraint >> description [
 { #category : 'accessing' }
 DCLAbstractConstraint >> description: aString [
 
-	description := aString 
+	description := aString.
 ]
 
 { #category : 'checking' }
@@ -139,8 +125,7 @@ DCLAbstractConstraint >> initialize [
 
 	super initialize.
 
-	violations := OrderedCollection new.
-	MiApplication current registerProducer: self for: DCLViolation.
+	MiApplication current registerProducer: self for: FamixCBViolation.
 ]
 
 { #category : 'DSL' }
@@ -206,9 +191,9 @@ DCLAbstractConstraint >> moduleToCheck [
 ]
 
 { #category : 'accessing' }
-DCLAbstractConstraint >> mooseModel [
+DCLAbstractConstraint >> name [
 
-	^moduleA mooseModel
+	^ name ifNil: [ self description ]
 ]
 
 { #category : 'DSL' }
@@ -223,6 +208,29 @@ DCLAbstractConstraint >> result: result belongsTo: module [
 	^result isCollection
 		ifTrue: [ result anySatisfy: [ :entity | self result: entity belongsTo: module ] ]
 		ifFalse: [ module memberEntities includes: result ]
+]
+
+{ #category : 'running' }
+DCLAbstractConstraint >> runOn: aCollection [
+
+	| fmProperties members |
+	
+	fmProperties := self fmProperties.
+	members := self moduleToCheck memberEntities asSet.
+	
+	self removeAllViolations.
+	
+	(aCollection select: [ :e | members includes: e ]) do: [ :entity |
+			(self allAssociationsOn: entity forFMProperties: fmProperties) do: [ :assoc |
+				(self isViolation: assoc) ifTrue: [ 
+					self addViolation: (FamixCBViolation new violatingEntity: assoc) 
+					] ] ]
+]
+
+{ #category : 'accessing' }
+DCLAbstractConstraint >> severity [
+
+	^ severity ifNil: [ FamixCBErrorSeverity ]
 ]
 
 { #category : 'accessing' }
@@ -240,9 +248,4 @@ DCLAbstractConstraint >> targetFmProperties [
 
 	^ associations collect: [ :asso |
 		  (moduleA model metamodel fmTypeOf: asso) allProperties detect: #isTarget ]
-]
-
-{ #category : 'accessing' }
-DCLAbstractConstraint >> violations [
-	^violations
 ]

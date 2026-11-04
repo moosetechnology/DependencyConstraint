@@ -14,21 +14,6 @@ Class {
 }
 
 { #category : 'checking' }
-DCLMustConstraint >> check [
-	"overrides #check because behaviour is very different:
-	If there is 1 association from ModuleA to Module B, return empty array (no violations)	
-	If there are none, returns all dependencies from ModuleA"
-
-	foundDependencyToB := false.
-
-	super check.
-
-	foundDependencyToB ifTrue: [ violations removeAll ].
-
-	^violations
-]
-
-{ #category : 'checking' }
 DCLMustConstraint >> fmProperties [
 
 	^self sourceFmProperties
@@ -52,4 +37,12 @@ DCLMustConstraint >> isViolation: entityAssociation [
 DCLMustConstraint >> moduleToCheck [
 
 	^moduleA
+]
+
+{ #category : 'running' }
+DCLMustConstraint >> runOn: aCollection [
+	foundDependencyToB := false.
+	super runOn: aCollection.
+	foundDependencyToB ifTrue: [ self removeAllViolations ]
+
 ]
