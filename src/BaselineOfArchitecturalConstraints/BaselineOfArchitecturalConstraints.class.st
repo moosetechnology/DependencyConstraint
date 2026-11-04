@@ -21,18 +21,18 @@ BaselineOfArchitecturalConstraints >> baseline: spec [
 BaselineOfArchitecturalConstraints >> defineDependencies: spec [
 
 	spec
-		baseline: 'Famix'
-		with: [ 
-			spec
-				loads: #( 'BasicTraits' 'Basic' );
-				repository: 'github://moosetechnology/Famix:development' ]
+		baseline: 'Famix' with: [
+				spec
+					loads: #( 'BasicTraits' 'Basic' );
+					repository: 'github://moosetechnology/Famix:development' ];
+		baseline: 'MooseIDE' with: [ spec repository: 'github://moosetechnology/MooseIDE:development' ]
 ]
 
 { #category : 'baselines' }
 BaselineOfArchitecturalConstraints >> definePackages: spec [
 
 	spec
-		package: 'ArchitecturalConstraints' with: [ spec requires: #(Famix) ]
+		package: 'ArchitecturalConstraints' with: [ spec requires: #('Famix' 'MooseIDE') ]
 
 
 ]
